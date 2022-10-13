@@ -6,7 +6,7 @@ from pathlib import Path
 fp = open("./morph/list.txt","w")
 
 start_img = 0
-num_img = 8
+num_img = 7
 epoch = 1500
 steps = 96 # optimized for 150 bpm 
 fps = 30
@@ -17,7 +17,7 @@ def makecmdline(first,second):
     print (cmd)
     return cmd
 
-for i in range(start_img,start_img + num_img):
+for i in range(start_img,start_img + (num_img-1)):
     j = i + 1
     cmd = makecmdline(i,j)
     os.system(cmd)
@@ -29,10 +29,12 @@ print ("make the video loop")
 
 final = start_img + num_img + 1
 
-cmd = makecmdline(start_img + num_img,final)
+cmd = makecmdline(start_img + num_img,start_img)
 os.system(cmd)
 os.rename("./morph/morph.mp4", "./morph/" + str(final) + ".mp4")
 fp.write("file '" + str(final) + ".mp4'" + "\n")
 os.system("cd ./morph")
-os.system('ffmpeg -f concat -safe 0 -i list.txt -c copy')
+cmd = 'ffmpeg -f concat -safe 0 -i ./list.txt -c copy ouput.mp4'
+print (cmd)
+os.system(cmd)
 fp.close()
